@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOMIES SHOP ASSISTANT</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Homies Approved</p>
+        <h1>Shop Assistant</h1>
+      </div>
+      <button id="refreshButton" class="icon-button" aria-label="Refresh">↻</button>
+    </header>
+
+    <main>
+      <section id="setupNotice" class="notice hidden">
+        <div>
+          <strong>Inventory count sheet needed</strong>
+          <p>Create the clean sheets for verified stock count and adjustments before logging sales.</p>
+        </div>
+        <button id="setupButton">Create Sheets</button>
+      </section>
+
+      <nav class="tabs" aria-label="Main sections">
+        <button class="tab active" data-tab="inventory">Inventory</button>
+        <button class="tab" data-tab="sale">Sale</button>
+        <button class="tab" data-tab="adjust">Adjust</button>
+        <button class="tab" data-tab="analytics">Analytics</button>
+        <button class="tab" data-tab="reports">Reports</button>
+        <button class="tab" data-tab="social">Social</button>
+      </nav>
+
+      <section id="inventory" class="panel active">
+        <div class="search-row">
+          <input id="searchInput" type="search" placeholder="Search name, code, size, price">
+          <select id="stockFilter">
+            <option value="all">All stock</option>
+            <option value="uncounted">Uncounted</option>
+            <option value="low-stock">Low stock</option>
+            <option value="sold-out">Sold out</option>
+            <option value="in-stock">In stock</option>
+          </select>
+        </div>
+        <div id="inventoryList" class="list"></div>
+      </section>
+
+      <section id="sale" class="panel">
+        <form id="saleForm" class="form-panel">
+          <label>Product
+            <select name="skuId" required></select>
+          </label>
+          <label>Quantity Sold
+            <input name="quantitySold" type="number" min="1" step="1" required>
+          </label>
+          <label>Sale Price
+            <input name="salePrice" type="number" min="0" step="0.01" required>
+          </label>
+          <label>Payment Method
+            <input name="paymentMethod" placeholder="Cash, card, GCash, bank">
+          </label>
+          <label>Customer Name
+            <input name="customerName">
+          </label>
+          <label>Staff Name
+            <input name="staffName" value="Mark">
+          </label>
+          <label>Receipt / Reference
+            <input name="receiptRef">
+          </label>
+          <label>Notes
+            <textarea name="notes" rows="3"></textarea>
+          </label>
+          <label class="check-row">
+            <input name="confirmNegativeStock" type="checkbox">
+            Confirm negative stock if needed
+          </label>
+          <button type="submit">Log Sale</button>
+        </form>
+      </section>
+
+      <section id="adjust" class="panel">
+        <form id="adjustForm" class="form-panel">
+          <label>Product
+            <select name="skuId" required></select>
+          </label>
+          <label>Verified Quantity
+            <input name="quantityAfter" type="number" min="0" step="1" required>
+          </label>
+          <label>Reason
+            <select name="reason" required>
+              <option value="">Choose reason</option>
+              <option>Physical count</option>
+              <option>Restock</option>
+              <option>Return</option>
+              <option>Damage</option>
+              <option>Correction</option>
+            </select>
+          </label>
+          <label>Staff Name
+            <input name="staffName" value="Mark">
+          </label>
+          <label>Notes
+            <textarea name="notes" rows="3"></textarea>
+          </label>
+          <button type="submit">Save Adjustment</button>
+        </form>
+      </section>
+
+      <section id="analytics" class="panel">
+        <div id="analyticsGrid" class="metric-grid"></div>
+        <h2>Best Sellers</h2>
+        <div id="bestSellers" class="list compact"></div>
+      </section>
+
+      <section id="reports" class="panel">
+        <div class="empty-state">
+          <h2>Google Sheets Reports</h2>
+          <p>Generate current inventory, low-stock, sold-out, daily, weekly, monthly, best-seller, slow-moving, and restock watch report tabs.</p>
+          <button id="reportsButton">Generate Reports</button>
+        </div>
+      </section>
+
+      <section id="social" class="panel">
+        <div class="empty-state">
+          <h2>Social Analytics</h2>
+          <p>Planned for Phase 2. Start with manual Instagram and campaign tracking, then add API-based tracking only when the shop workflow is stable.</p>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
