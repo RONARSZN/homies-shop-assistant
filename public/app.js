@@ -6,6 +6,9 @@ import { appAccessRedirectUrl, shouldRedirectToAccess } from './appAccessRedirec
 import { renderPrimaryNavigation } from './navigation.js';
 
 let sessionPassword = sessionStorage.getItem('shopPassword') || '';
+async function loadAll() {
+  els.refreshButton.disabled = true;
+  try {
 const state = {
   products: [],
   sales: [],
@@ -27,7 +30,6 @@ const els = {
   passwordInput: document.querySelector('#passwordInput'),
   loginButton: document.querySelector('#loginButton'),
   loginError: document.querySelector('#loginError'),
-  setupNotice: document.querySelector('#setupNotice'),
   setupNotice: document.querySelector('#setupNotice'),
   setupButton: document.querySelector('#setupButton'),
   appAccessButton: document.querySelector('#appAccessButton'),
@@ -97,22 +99,6 @@ if (sessionPassword) {
   els.passwordInput.focus();
 }
 setInterval(loadQuietly, 15000);
-
-async function api(url, options = {}) {
-  const headers = { ...(options.headers || {}) };
-  if (sessionPassword) headers['Authorization'] = `Bearer ${sessionPassword}`;
-  const response = await fetch(url, { ...options, headers });
-  if (response.status === 401) {
-    sessionPassword = '';
-    sessionStorage.removeItem('shopPassword');
-    els.loginOverlay.classList.remove('hidden');
-    els.passwordInput.focus();
-    throw new Error('Session expired. Please log in again.');
-  }
-  const payload = await response.json();
-  if (!response.ok) throw new Error(payload.error || 'Request failed.');
-  return payload;
-}
 
 async function attemptLogin() {
   const entered = els.passwordInput.value.trim();

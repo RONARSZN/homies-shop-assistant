@@ -5,7 +5,7 @@ export const config = {
   spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
   googleServiceAccountEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
   googlePrivateKey: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  shopPassword:
+  shopPassword: process.env.SHOP_PASSWORD,
   appAccessPassword: process.env.APP_ACCESS_PASSWORD || '',
   itemEditorPassword: process.env.ITEM_EDITOR_PASSWORD || '',
   stockCountPassword: process.env.STOCK_COUNT_PASSWORD || '',
