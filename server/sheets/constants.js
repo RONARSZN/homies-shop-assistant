@@ -2,13 +2,17 @@ export const SHEETS = {
   products: 'ITEM CODES and SRPs',
   sales: 'SALES',
   currentInventory: 'CURRENT INVENTORY',
-  adjustments: 'ADJUSTMENTS'
+  adjustments: 'ADJUSTMENTS',
+  pendingSales: 'PENDING SALES',
+  canceledSales: 'CANCELED SALES'
 };
 
 export const PRODUCT_RANGE = `'${SHEETS.products}'!A3:I1202`;
+export const SALES_START_ROW = 5;
 export const SALES_RANGE = `'${SHEETS.sales}'!A5:G1003`;
 export const CURRENT_INVENTORY_RANGE = `'${SHEETS.currentInventory}'!A1:J2000`;
 export const ADJUSTMENTS_RANGE = `'${SHEETS.adjustments}'!A1:K2000`;
+export const PENDING_SALES_RANGE = `'${SHEETS.pendingSales}'!A1:P2000`;
 
 export const CURRENT_INVENTORY_HEADERS = [
   'SKU ID',
@@ -35,4 +39,23 @@ export const ADJUSTMENTS_HEADERS = [
   'Reason',
   'Staff Name',
   'Notes'
+];
+
+export const PENDING_SALES_HEADERS = [
+  'Pending ID',
+  'Submitted At',
+  'Sale Date',
+  'SKU ID',
+  'Product Code',
+  'Product Name',
+  'Size',
+  'Quantity',
+  'Amount',
+  'Customer Name',
+  'Staff/Seller Name',
+  'Notes',
+  'Status',
+  'Actioned At',
+  'Front Desk Staff',
+  'Cancel Reason'
 ];

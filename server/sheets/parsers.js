@@ -1,3 +1,5 @@
+import { SALES_START_ROW } from './constants.js';
+
 const SECTION_WORDS = new Set([
   'BOARDS',
   'BINDINGS',
@@ -86,10 +88,12 @@ export function parseInventory(rows) {
 
 export function parseSales(rows) {
   return rows
+    .map((row, index) => ({ row, rowNumber: SALES_START_ROW + index }))
     .slice(1)
-    .filter((row) => clean(row[1]) || clean(row[2]))
-    .filter((row) => clean(row[2]).toLowerCase() !== 'grand total')
-    .map((row) => ({
+    .filter(({ row }) => clean(row[1]) || clean(row[2]))
+    .filter(({ row }) => clean(row[2]).toLowerCase() !== 'grand total')
+    .map(({ row, rowNumber }) => ({
+      rowNumber,
       month: clean(row[0]),
       date: excelSerialToDate(row[1]),
       productCode: clean(row[2]),
@@ -97,6 +101,32 @@ export function parseSales(rows) {
       amount: toNumber(row[4]) ?? 0,
       customerName: clean(row[5]),
       remarks: clean(row[6])
+    }));
+}
+
+export function parsePendingSales(rows) {
+  return rows
+    .map((row, index) => ({ row, rowNumber: index + 1 }))
+    .slice(1)
+    .filter(({ row }) => clean(row[0]) || clean(row[3]))
+    .map(({ row, rowNumber }) => ({
+      rowNumber,
+      pendingId: clean(row[0]),
+      submittedAt: clean(row[1]),
+      saleDate: excelSerialToDate(row[2]),
+      skuId: clean(row[3]),
+      productCode: clean(row[4]),
+      productName: clean(row[5]),
+      size: clean(row[6]),
+      quantity: toNumber(row[7]) ?? 0,
+      amount: toNumber(row[8]) ?? 0,
+      customerName: clean(row[9]),
+      staffName: clean(row[10]),
+      notes: clean(row[11]),
+      status: clean(row[12]) || 'PENDING',
+      actionedAt: clean(row[13]),
+      frontDeskStaff: clean(row[14]),
+      cancelReason: clean(row[15])
     }));
 }
 

@@ -8,6 +8,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.use(express.json());
+
+app.use('/api', (req, res, next) => {
+  if (req.path === '/health') return next();
+  if (!config.shopPassword) return next();
+  const auth = req.headers['authorization'] || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
+  if (token !== config.shopPassword) {
+    return res.status(401).json({ error: 'Wrong password.' });
+  }
+  next();
+});
+
 app.use('/api', apiRouter);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 

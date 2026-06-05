@@ -7,12 +7,29 @@
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
+    <div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <p class="eyebrow">Homies Approved</p>
+    <h1>Shop Assistant</h1>
+    <label>Password
+      <input id="passwordInput" type="password" placeholder="Enter password">
+    </label>
+    <p id="loginError" class="login-error hidden">Wrong password. Try again.</p>
+    <button id="loginButton">Unlock</button>
+  </div>
+</div>
     <header class="app-header">
-      <div>
-        <p class="eyebrow">Homies Approved</p>
-        <h1>Shop Assistant</h1>
+      <div class="brand-lockup">
+        <img class="brand-logo" src="/assets/homies-proshop-logo.png" alt="Homies Proshop">
+        <div>
+          <p class="eyebrow">Homies Approved</p>
+          <h1>Shop Assistant</h1>
+        </div>
       </div>
-      <button id="refreshButton" class="icon-button" aria-label="Refresh">↻</button>
+      <div class="header-actions">
+        <button id="appAccessButton" class="header-action-button" type="button">Unlock</button>
+        <button id="refreshButton" class="icon-button" type="button" aria-label="Refresh">↻</button>
+      </div>
     </header>
 
     <main>
@@ -24,16 +41,10 @@
         <button id="setupButton">Create Sheets</button>
       </section>
 
-      <nav class="tabs" aria-label="Main sections">
-        <button class="tab active" data-tab="inventory">Inventory</button>
-        <button class="tab" data-tab="sale">Sale</button>
-        <button class="tab" data-tab="adjust">Adjust</button>
-        <button class="tab" data-tab="analytics">Analytics</button>
-        <button class="tab" data-tab="reports">Reports</button>
-        <button class="tab" data-tab="social">Social</button>
-      </nav>
+      <nav id="primaryNav" class="primary-nav" aria-label="Main sections"></nav>
 
       <section id="inventory" class="panel active">
+        <section id="inventoryMovement" class="movement-panel"></section>
         <div class="search-row">
           <input id="searchInput" type="search" placeholder="Search name, code, size, price">
           <select id="stockFilter">
@@ -45,26 +56,69 @@
           </select>
         </div>
         <div id="inventoryList" class="list"></div>
+        <div class="price-panel">
+          <div class="price-tools">
+            <label>Price / Stock Search
+              <input id="priceSearchInput" type="search" placeholder="Search code, name, size">
+            </label>
+            <div class="editor-panel">
+              <h2>Item Editor</h2>
+              <label>Editor Password
+                <input id="editorPasswordInput" type="password" autocomplete="current-password">
+              </label>
+              <button id="unlockEditorButton" type="button">Unlock Editor</button>
+              <form id="itemEditorForm" class="hidden">
+                <label>Selected Item
+                  <select name="skuId" required></select>
+                </label>
+                <label>SRP
+                  <input name="srp" type="number" min="0" step="0.01" required>
+                </label>
+                <button type="submit">Save Price</button>
+              </form>
+            </div>
+          </div>
+          <div id="priceCheckerResults" class="list price-results"></div>
+        </div>
+      </section>
+
+      <section id="stock-count" class="panel">
+        <form id="stockCountForm" class="form-panel">
+          <label>Product Search
+            <input id="stockCountSearchInput" type="search" placeholder="Search code, name, size">
+          </label>
+          <label>Product
+            <select name="skuId" required></select>
+          </label>
+          <div id="stockCountCurrent" class="stock-count-current">Current quantity: Choose a product</div>
+          <label>New True Quantity
+            <input name="quantity" type="number" min="0" step="1" required>
+          </label>
+          <label>Counted By
+            <input name="countedBy" value="Mark" required>
+          </label>
+          <label>Notes
+            <textarea name="notes" rows="3"></textarea>
+          </label>
+          <label>Stock Count Password
+            <input name="password" type="password" autocomplete="current-password" required>
+          </label>
+          <button type="submit">Save Count</button>
+        </form>
       </section>
 
       <section id="sale" class="panel">
         <form id="saleForm" class="form-panel">
-          <label>Product
-            <select name="skuId" required></select>
-          </label>
-          <label>Quantity Sold
-            <input name="quantitySold" type="number" min="1" step="1" required>
-          </label>
-          <label>Sale Price
-            <input name="salePrice" type="number" min="0" step="0.01" required>
-          </label>
+          <div id="saleItems" class="sale-items"></div>
+          <button id="addSaleItemButton" class="secondary-button" type="button">Add another item</button>
+          <datalist id="saleProductOptions"></datalist>
           <label>Payment Method
             <input name="paymentMethod" placeholder="Cash, card, GCash, bank">
           </label>
           <label>Customer Name
             <input name="customerName">
           </label>
-          <label>Staff Name
+          <label>Sold by
             <input name="staffName" value="Mark">
           </label>
           <label>Receipt / Reference
@@ -77,8 +131,28 @@
             <input name="confirmNegativeStock" type="checkbox">
             Confirm negative stock if needed
           </label>
-          <button type="submit">Log Sale</button>
+          <button type="submit">Submit Pending Sale</button>
         </form>
+      </section>
+
+      <section id="front-desk" class="panel">
+        <form id="frontDeskUnlockForm" class="form-panel">
+          <label>Front Desk Password
+            <input name="password" type="password" autocomplete="current-password" required>
+          </label>
+          <button type="submit">Unlock Front Desk</button>
+        </form>
+
+        <div id="frontDeskPanel" class="front-desk-panel hidden">
+          <div class="front-desk-toolbar">
+            <label class="check-row">
+              <input id="frontDeskHistoryToggle" type="checkbox">
+              View History
+            </label>
+            <button id="frontDeskRefreshButton" class="secondary-button" type="button">Refresh Queue</button>
+          </div>
+          <div id="frontDeskQueue" class="list"></div>
+        </div>
       </section>
 
       <section id="adjust" class="panel">
@@ -101,6 +175,9 @@
           </label>
           <label>Staff Name
             <input name="staffName" value="Mark">
+          </label>
+          <label>Adjustment Password
+            <input name="password" type="password" autocomplete="current-password" required>
           </label>
           <label>Notes
             <textarea name="notes" rows="3"></textarea>
